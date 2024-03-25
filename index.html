@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  const root=document.getElementById("root");
+  function MinutesToHours() {
+    const [amount, setAmount] = React.useState(0);
+    const [inverted, setInverted] = React.useState(false);
+    const onChange =(event) => {
+      setAmount(event.target.value);
+    };
+
+    const reset = () => setAmount(0);
+    const onFlip = () => {
+      reset();
+      setInverted((current) => !current)
+    };
+
+    return (
+    <div>
+      <div>
+        <label htmlFor="minutes">Minutes</label>
+        <input 
+          onChange={onChange} 
+          value={inverted ? amount*60 :amount} 
+          id="setAmount" 
+          placeholder="Minutes" 
+          type="number"
+          disabled={inverted}
+           />
+      </div>
+
+      <div>
+        <label htmlFor="hours">Hours</label>
+        <input  
+          value={inverted ? amount : (amount/60).toFixed(2)} 
+          id="hours" 
+          placeholder="hours" 
+          type="number"
+          disabled={!inverted}
+          onChange={onChange} 
+          />
+      </div>
+      <button onClick={reset}>Reset</button>
+      <button onClick={onFlip}>{onFlip}{inverted ? "Turn back" : "Invert"}</button>
+    </div>
+      );
+    }
+
+  function KmToMiles(){
+    const [speed, setSpeed] = React.useState(0);
+    const [inverted, setInverted] = React.useState(false);
+    const onChange =(event) => {
+      setSpeed(event.target.value);
+    };
+
+    const reset = () => setSpeed(0);
+    const onFlip = () => {
+      reset();
+      setInverted((current) => !current)
+    };
+
+    return (
+    <div>
+      <div>
+        <label htmlFor="kilo">KM</label>
+        <input 
+          onChange={onChange} 
+          value={inverted ? speed*1.61 :speed} 
+          id="km" 
+          placeholder="Km" 
+          type="number"
+          disabled={inverted}
+           />
+      </div>
+
+      <div>
+        <label htmlFor="miles">Miles</label>
+        <input  
+          value={inverted ? speed : (speed/1.61).toFixed(2)}
+          id="miles" 
+          placeholder="miles" 
+          type="number"
+          disabled={!inverted}
+          onChange={onChange} 
+          />
+      </div>
+      <button onClick={reset}>Reset</button>
+      <button onClick={onFlip}>{onFlip}{inverted ? "Turn back" : "Invert"}</button>
+    </div>
+      );
+    }
+
+  
+  function EveryBytes(){
+    const [bytes, setBytes] = React.useState(0);
+    const [inverted, setInverted] = React.useState(0);
+    const onChange =(event) => {
+      setBytes(event.target.value);
+    };
+
+    const reset = () => setBytes(0);
+    const onFlip = () => {
+      reset();
+      setInverted(inverted == 2 ? (setInverted) => 0 : inverted+1);
+    };
+
+    return (
+    <div>
+      <div>
+        <label htmlFor="GB">GB</label>
+        <input 
+          onChange={onChange} 
+          value={inverted==0 ? bytes : (inverted==1 ? bytes/1024 : bytes/1048576)}
+          id="GIGA" 
+          placeholder="GB" 
+          type="number"
+          disabled={inverted != 0}
+           />
+      </div>
+
+      <div>
+        <label htmlFor="MB">MB</label>
+        <input  
+          value={inverted==1 ? bytes : (inverted==0 ? bytes*1024 : bytes/1024)}
+          id="MEGA" 
+          placeholder="MB" 
+          type="number"
+          disabled={inverted !=1}
+          onChange={onChange} 
+          />
+      </div>
+
+      <div>
+        <label htmlFor="KB">KB</label>
+        <input  
+          value={inverted==2 ? bytes : (inverted==0 ? bytes*1048576 : bytes*1024)}
+          id="KILO" 
+          placeholder="KB" 
+          type="number"
+          disabled={inverted != 2}
+          onChange={onChange} 
+          />
+      </div>
+
+      <button onClick={reset}>Reset</button>
+      <button onClick={onFlip}>{onFlip}Invert</button>
+    </div>
+      );
+
+    }
+
+  function App(){
+    const [index, setIndex] = React.useState("0")
+    const onSelect = (event) => {
+      setIndex(event.target.value)
+    };
+
+    return (
+    <div>
+      <h1>단위변환기 - Converter</h1>
+      <img class="cute" src="./cat.png" alt="img"/>
+      <select value={index} onChange={onSelect}>
+        <option value="0">Minutes & Hours</option>
+        <option value="1">Km & Miles</option>
+        <option value="2">GB & MB & KB</option>
+      </select>
+      {index ==="0" ? <MinutesToHours /> : null}
+      {index ==="1" ? <KmToMiles /> : null}
+      {index ==="2" ? <EveryBytes /> : null}
+    </div>
+      );
+    }
+
+  ReactDOM.render(<App/>, root);
+  </script>
+</html>
